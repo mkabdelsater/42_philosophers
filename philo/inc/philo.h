@@ -22,6 +22,9 @@
 # define PURPLE	"\e[35m"
 # define CYAN	"\e[36m"
 
+# define MSG_USAGE "usage: ./philo <numer of philosophers> <time to die> \
+	<time to eat> <time to sleep> <optional: number of meals to stop after>\n"
+
 typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
