@@ -24,6 +24,7 @@
 
 # define MSG_USAGE "usage: ./philo <numer of philosophers> <time to die> \
 	<time to eat> <time to sleep> <optional: number of meals to stop after>\n"
+# define ERR_NON_INT "only positive integers are valid arguments, try again."
 
 typedef struct s_philosopher	t_philosopher;
 
@@ -53,5 +54,8 @@ typedef struct s_philosopher
 	time_t				since_last_meal;
 	t_philo				*table;
 }	t_philosopher;
+
+int	ft_atoi(const char *nptr);
+
 
 #endif

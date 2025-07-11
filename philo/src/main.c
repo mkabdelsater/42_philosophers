@@ -1,4 +1,4 @@
-#include "philo.h"
+#include "../inc/philo.h"
 
 void	err_out(char *msg)
 {
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 	if (!philo)
 		err_out("Failed to Set the Table");
 	if (!start_simulation(philo))
-		return (err_out("Couldn't start the simulation"));
+		err_out("Couldn't start the simulation");
 	end_simulation(philo);
 	return (EXIT_SUCCESS);
 }
