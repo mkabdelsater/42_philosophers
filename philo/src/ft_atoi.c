@@ -1,20 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/12 11:59:01 by moabdels          #+#    #+#             */
-/*   Updated: 2024/06/21 14:35:09 by moabdels         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 //TESTING INCLUDES
 // #include <stdio.h>
 // #include <stdlib.h>
 //START
-#include "libft.h"
 
 static int	ft_iswhitespace(int c)
 {
