@@ -12,10 +12,6 @@
 # define PHILO_CAP 200
 # define STR_PHILO_CAP "200"
 
-# ifndef DEBUG_FORMATTING
-#  define DEBUG_FORMATTING 0
-# endif
-
 # define NC		"\e[0m"
 # define RED	"\e[31m"
 # define GREEN	"\e[32m"
@@ -35,7 +31,7 @@ typedef struct s_philo
 	time_t			til_death;
 	time_t			til_meal;
 	time_t			til_sleep;
-	int				must_eat_count;
+	int				max_meals;
 	bool			sim_stop;
 	pthread_mutex_t	sim_stop_lock;
 	pthread_mutex_t	write_lock;

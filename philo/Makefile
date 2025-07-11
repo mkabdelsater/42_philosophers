@@ -1,24 +1,14 @@
 NAME		= philo
 CC			= cc
-CFLAGS		= -Werror -Wall -Wextra -pthread
+DEBUG		= -fsanitize=thread -fsanitize=address -fsanitize=leak \
+				-fsanitize=undefined -g
 
-# ? Run 'make re MODE=pretty' for color formatting (no debug or ASAN).
-# ? Run 'make re MODE=debug' for debug and ASAN.
-# ! Note: SAN will not work with valgrind
-
-MODE		= none
-ifeq ($(MODE), pretty)
-	CFLAGS	+= -D DEBUG_FORMATTING=1
-endif
-ifeq ($(MODE), debug)
-	CFLAGS	+= -D DEBUG_FORMATTING=1 -fsanitize=thread -fsanitize=address \
-		-fsanitize=leak -fsanitize=undefined -g
-endif
+CFLAGS		= -Werror -Wall -Wextra -pthread DEBUG
 
 SRC_PATH	= src/
 OBJ_PATH	= obj/
 
-SRC		=	main.c utils.c ft_atoi.c
+SRC		=	main.c utils.c ft_atoi.c setup.c
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

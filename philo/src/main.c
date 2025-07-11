@@ -35,6 +35,12 @@ void	validate_input(int ac, char **av)
 	}
 }
 
+// static void start_simulation(t_philo *philo)
+// {
+// 	unsigned int	i;
+// 	phi
+// }
+
 int	main(int ac, char **av)
 {
 	// t_philo	*philo;
@@ -43,7 +49,7 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		err_out(MSG_USAGE);
 	validate_input(ac, av);
-	// philo = set_the_table(ac, av, 1);
+	// philo = set_the_table(ac, av);
 	// if (!philo)
 	// 	err_out("Failed to Set the Table");
 	// if (!start_simulation(philo))
