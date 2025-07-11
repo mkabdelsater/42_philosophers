@@ -18,13 +18,13 @@ endif
 SRC_PATH	= src/
 OBJ_PATH	= obj/
 
-SRC		=	main.c input.c ft_atoi.c
+SRC		=	main.c utils.c ft_atoi.c
 
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)
 OBJS	= $(addprefix $(OBJ_PATH), $(OBJ))
 
-INC		= -I ./includes/
+INC		= -I ./inc/
 
 all: $(NAME)
 

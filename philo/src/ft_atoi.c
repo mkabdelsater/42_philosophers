@@ -24,7 +24,7 @@ int	ft_atoi(const char *nptr)
 			sign *= -1;
 		nptr++;
 	}
-	while (*nptr && ft_isdigit(*nptr))
+	while (*nptr && *nptr >= '0' && *nptr <= '9')
 	{
 		check_overflow = res;
 		res = res * 10 + sign * (*nptr - 48);
