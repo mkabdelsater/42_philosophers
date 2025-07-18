@@ -48,7 +48,7 @@ typedef struct s_philosopher
 	unsigned int		fork[2];
 	pthread_mutex_t		meal_time_lock;
 	time_t				since_last_meal;
-	t_philo				*table;
+	t_philo				*philo;
 }	t_philosopher;
 
 int		ft_atoi(const char *nptr);
