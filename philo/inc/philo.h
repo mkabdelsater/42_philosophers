@@ -55,7 +55,7 @@ typedef struct s_philosopher
 int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
 void	err_free(char *msg, t_philo *philo);
-
+time_t	get_start_time(void);
 
 // * cleanup *
 void	free_philo(t_philo *philo);

@@ -37,21 +37,20 @@ void	validate_input(int ac, char **av)
 
 // static void start_simulation(t_philo *philo)
 // {
-// 	unsigned int	i;
-// 	phi
+// 	int	i;
+// 	philo->start_time;
 // }
 
 int	main(int ac, char **av)
 {
-	// t_philo	*philo;
+	t_philo	*philo;
 
-	// philo = NULL;
 	if (ac < 5 || ac > 6)
 		err_out(MSG_USAGE);
 	validate_input(ac, av);
-	// philo = set_the_table(ac, av);
-	// if (!philo)
-	// 	err_out("Failed to Set the Table");
+	philo = set_the_table(ac, av);
+	if (!philo)
+		return(err_out("Failed to Set the Table"), EXIT_FAILURE);
 	// if (!start_simulation(philo))
 	// 	err_out("Couldn't start the simulation");
 	// end_simulation(philo);
