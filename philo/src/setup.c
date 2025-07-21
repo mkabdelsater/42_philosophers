@@ -102,6 +102,8 @@ t_philo	*set_the_table(int ac, char **av, int i)
 	philo->philosophers = usher_the_guests(philo);
 	if (!philo->philosophers)
 		return (NULL);
-
+	if (!init_mutex_locks(philo))
+		return (NULL);
 	philo->sim_stop = false;
+	return (philo);
 }
