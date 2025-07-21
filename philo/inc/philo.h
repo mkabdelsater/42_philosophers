@@ -51,8 +51,15 @@ typedef struct s_philosopher
 	t_philo				*philo;
 }	t_philosopher;
 
+// * utils *
 int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
+void	err_free(char *msg, t_philo *philo);
+
+
+// * cleanup *
+void	free_philo(t_philo *philo);
+
 
 
 #endif
