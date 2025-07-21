@@ -1,5 +1,37 @@
 #include "../inc/philo.h"
 
+
+// ? if we let philosophers take forks normally, having an odd number of philos
+// ? causes the following problem, taking 3 philos for example, in one cycle:
+// ? p_0 takes f_0, p_1 takes f_1, p_2 takes f_2
+// ? each philo holds one fork, and attempts to take a fork held by the other
+// ? we get a deadlock right off the bat!
+// ? to avoid this, we make odd even numbered philos start by attempting to take
+// ? an odd fork, guarantteeing that either them or the next philo fails
+// ? to take a fork, we get:
+// ? p_0 wants f_0 then f_1
+// ? p_1 wants f_2 then f_1
+// ? p_2 wants f_2 then f_0, f_2 will have been taken, causing them to wait.
+
+static void assign_forks(t_philosopher *philosopher)
+{
+	int	ph_id;
+	int	philo_count;
+
+	ph_id = philosopher->id;
+	philo_count = philosopher->philo->philo_count;
+	if (ph_id % 2 == 1)
+	{
+		philosopher->fork[0] = (ph_id + 1) % philo_count;
+		philosopher->fork[1] = ph_id;
+	}
+	else
+	{
+		philosopher->fork[0] = ph_id;
+		philosopher->fork[1] = (ph_id + 1) % philo_count;
+	}
+}
+
 static t_philosopher	**usher_the_guests(t_philo *philo)
 {
 	t_philosopher	**philosophers;
