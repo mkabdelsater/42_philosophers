@@ -16,7 +16,7 @@ static bool ready_to_die(t_philosopher *philosopher)
 	if ((time - philosopher->since_last_meal) < philosopher->philo->til_death)
 		return (false);
 	set_sim_stop(philosopher->philo, true);
-	print_status(philosopher, true, DIED);
+	print_status(philosopher, true, DEAD);
 	pthread_mutex_unlock(&philosopher->meal_time_lock);
 	return (true);
 }

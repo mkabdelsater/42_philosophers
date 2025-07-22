@@ -66,6 +66,9 @@ int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
 void	err_free(char *msg, t_philo *philo);
 
+// * reporting *
+bool	get_sim_stop(t_philo *philo);
+
 // * time *
 time_t	get_start_time(void);
 void	delay_thread(time_t t);
