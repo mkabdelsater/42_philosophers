@@ -61,6 +61,8 @@ typedef enum e_status
 	HAS_FORK_2
 }	t_status;
 
+void	*terminator(t_philo *philo);
+
 // * utils *
 int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
