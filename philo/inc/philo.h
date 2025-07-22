@@ -37,7 +37,7 @@ typedef struct s_philo
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	*fork_locks;
 	t_philosopher	**philosophers;
-	pthread_t		reaper;
+	pthread_t		terminator;
 }	t_philo;
 
 typedef struct s_philosopher
@@ -55,7 +55,10 @@ typedef struct s_philosopher
 int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
 void	err_free(char *msg, t_philo *philo);
+
+// * time *
 time_t	get_start_time(void);
+void	delay_thread(time_t t);
 
 // * cleanup *
 void	free_philo(t_philo *philo);

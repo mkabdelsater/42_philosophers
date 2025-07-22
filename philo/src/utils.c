@@ -8,6 +8,13 @@ time_t	get_start_time(void)
 	return ((teval.tv_sec * 1000) + (teval.tv_usec) / 1000);
 }
 
+// ! ??? this is used for synchronization?
+void	delay_thread(time_t t)
+{
+	while (get_start_time() < t)
+		continue ;
+}
+
 void	err_free(char *msg, t_philo *philo)
 {
 	if (philo)
