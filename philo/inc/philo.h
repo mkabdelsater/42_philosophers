@@ -51,6 +51,16 @@ typedef struct s_philosopher
 	t_philo				*philo;
 }	t_philosopher;
 
+typedef enum e_status
+{
+	DEAD,
+	EATING,
+	SLEEPING,
+	THINKING,
+	HAS_FORK_1,
+	HAS_FORK_2
+}	t_status;
+
 // * utils *
 int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
