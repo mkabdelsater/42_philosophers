@@ -1,5 +1,9 @@
 #include "../inc/philo.h"
 
+static void p_act_alone(t_philosopher *p);
+static void p_act_think(t_philosopher *p, bool quiet);
+static void p_act_eat_sleep(t_philosopher *p);
+
 
 /**
  * * philos with even numbers start by thinking, delaying their
@@ -8,20 +12,20 @@
  * ! but didn't we already solve this?
  * TODO: try removing the odd number thing
  */
-void	*philo_actions(t_philosopher *p)
+void	*p_act_init_cycle(t_philosopher *p)
 {
 	if (p->philo->max_meals == 0)
 		return (NULL);
-	// TODO: encapsulate the blow into sync_update_* functions ?
 	pthread_mutex_lock(&p->meal_time_lock);
 	p->since_last_meal = p->philo->start_time;
 	pthread_mutex_unlock(&p->meal_time_lock);
 	delay_thread(p->philo->start_time);
 	//when does this happen? if at time of death why exactly 0?
+	// why are we doing this?
 	if (p->philo->til_death == 0)
 		return (NULL);
 	if (p->philo->philo_count == 1)
-		return (p_act_alone(p));
+		return (p_act_alone(p), NULL);
 	else if (p->id % 2 != 0)
 		p_act_think(p, true);
 	while (!get_sim_stop(p->philo))
@@ -86,4 +90,15 @@ static void p_act_eat_sleep(t_philosopher *p)
 	pthread_mutex_unlock(&p->philo->fork_locks[p->fork[1]]);
 	pthread_mutex_unlock(&p->philo->fork_locks[p->fork[0]]);
 	philo_thread_sleep(p->philo, p->philo->til_sleep);
+}
+
+// this was returning NULL for some reason but the value wasn't
+// being used meaningfully
+static void p_act_alone(t_philosopher *p)
+{
+	pthread_mutex_lock(&p->philo->fork_locks[p->fork[0]]);
+	print_status(p, false, HAS_FORK_1);
+	philo_thread_sleep(p->philo, p->philo->til_death);
+	print_status(p, false, DEAD);
+	pthread_mutex_unlock(&p->philo->fork_locks[p->fork[0]]);
 }

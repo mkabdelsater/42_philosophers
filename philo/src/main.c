@@ -30,7 +30,7 @@ static bool start_sim(t_philo *philo)
 	while (i < philo->philo_count)
 	{
 		res = pthread_create(&philo->philosophers[i]->thread,
-			NULL, &philo_actions, philo->philosophers);
+			NULL, &p_act_init_cycle, philo->philosophers);
 		if (res != 0)
 			return (err_free("philo thread creation failed", philo), false);
 		i++;

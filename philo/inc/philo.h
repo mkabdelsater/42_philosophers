@@ -81,6 +81,6 @@ void	free_philo(t_philo *philo);
 void	destroy_mutexes(t_philo *philo);
 
 // * actions *
-void	*philo_actions(t_philosopher *p);
+void	*p_act_init_cycle(t_philosopher *p);
 
 #endif
