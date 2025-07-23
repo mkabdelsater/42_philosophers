@@ -26,7 +26,7 @@ static bool start_sim(t_philo *philo)
 	int	res;
 
 	i = 0;
-	philo->start_time = get_start_time() + (philo->philo_count * 20);
+	philo->start_time = get_current_time() + (philo->philo_count * 20);
 	while (i < philo->philo_count)
 	{
 		res = pthread_create(&philo->philosophers[i]->thread,
@@ -36,7 +36,7 @@ static bool start_sim(t_philo *philo)
 		i++;
 	}
 	if (philo->philo_count &&
-		thread_create(&philo->terminator, NULL, &terminator, philo) != 0)
+		pthread_create(&philo->terminator, NULL, &terminator, philo) != 0)
 			return (err_free("terminator thread create failed", philo), false);
 	return (true);
 

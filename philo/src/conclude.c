@@ -12,7 +12,7 @@ static bool ready_to_die(t_philosopher *philosopher)
 {
 	time_t	time;
 
-	time = get_start_time();
+	time = get_current_time();
 	if ((time - philosopher->since_last_meal) < philosopher->philo->til_death)
 		return (false);
 	set_sim_stop(philosopher->philo, true);
@@ -49,8 +49,12 @@ static bool	can_conclude(t_philo *philo)
 // * or if all philos had enough meals, ending the sim in those cases
 // ! ??? why is this a void pointer
 
-void	*terminator(t_philo *philo)
+void	*terminator(void *data)
 {
+	t_philo	*philo;
+
+	philo = (t_philo *)philo;
+
 	if (philo->max_meals == 0)
 		return (NULL);
 	set_sim_stop(philo, false);

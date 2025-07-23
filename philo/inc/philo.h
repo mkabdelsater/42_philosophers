@@ -26,7 +26,7 @@ typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
 {
-	unsigned int	philo_count;
+	int	philo_count;
 	time_t			start_time;
 	time_t			til_death;
 	time_t			til_meal;
@@ -43,9 +43,9 @@ typedef struct s_philo
 typedef struct s_philosopher
 {
 	pthread_t			thread;
-	unsigned int		id;
-	unsigned int		meals_had;
-	unsigned int		fork[2];
+	int		id;
+	int		meals_had;
+	int		fork[2];
 	pthread_mutex_t		meal_time_lock;
 	time_t				since_last_meal;
 	t_philo				*philo;
@@ -61,19 +61,19 @@ typedef enum e_status
 	HAS_FORK_2
 }	t_status;
 
-void	*terminator(t_philo *philo);
-
 // * utils *
 int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
 void	err_free(char *msg, t_philo *philo);
+void	validate_input(int ac, char **av);
+
 
 // * reporting *
 bool	get_sim_stop(t_philo *philo);
 void	print_status(t_philosopher *p, bool is_terminator, t_status status);
 
 // * time *
-time_t	get_start_time(void);
+time_t	get_current_time(void);
 void	delay_thread(time_t t);
 
 // * cleanup *
@@ -81,6 +81,8 @@ void	free_philo(t_philo *philo);
 void	destroy_mutexes(t_philo *philo);
 
 // * actions *
-void	*p_act_init_cycle(t_philosopher *p);
+void	*p_act_init_cycle(void *p);
+void	*terminator(void *data);
+t_philo	*set_the_table(int ac, char **av);
 
 #endif

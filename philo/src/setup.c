@@ -84,7 +84,7 @@ static t_philosopher	**usher_the_guests(t_philo *philo)
 
 // ? @16 do I check the max number of meals? if it's 0 I print "can't be 0"
 
-t_philo	*set_the_table(int ac, char **av, int i)
+t_philo	*set_the_table(int ac, char **av)
 {
 	t_philo	*philo;
 

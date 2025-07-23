@@ -12,8 +12,11 @@ static void p_act_eat_sleep(t_philosopher *p);
  * ! but didn't we already solve this?
  * TODO: try removing the odd number thing
  */
-void	*p_act_init_cycle(t_philosopher *p)
+void	*p_act_init_cycle(void *phl)
 {
+	t_philosopher	*p;
+
+	p = (t_philosopher*)phl;
 	if (p->philo->max_meals == 0)
 		return (NULL);
 	pthread_mutex_lock(&p->meal_time_lock);
@@ -40,8 +43,8 @@ void	philo_thread_sleep(t_philo *philo, time_t duration)
 {
 	time_t	wake_up_time;
 
-	wake_up_time = get_start_time() + duration;
-	while (get_start_time() < wake_up_time)
+	wake_up_time = get_current_time() + duration;
+	while (get_current_time() < wake_up_time)
 	{
 		if (get_sim_stop(philo))
 			break ;
@@ -54,7 +57,7 @@ static void p_act_think(t_philosopher *p, bool quiet)
 	time_t	til_think;
 
 	pthread_mutex_lock(&p->meal_time_lock);
-	til_think = (p->philo->til_death - (get_start_time() - p->since_last_meal)
+	til_think = (p->philo->til_death - (get_current_time() - p->since_last_meal)
 				- p->philo->til_meal) / 2;
 	pthread_mutex_unlock(&p->meal_time_lock);
 	if (til_think < 0)
@@ -77,7 +80,7 @@ static void p_act_eat_sleep(t_philosopher *p)
 	print_status(p, false, HAS_FORK_2);
 	print_status(p, false, EATING);
 	pthread_mutex_lock(&p->meal_time_lock);
-	p->since_last_meal = get_start_time();
+	p->since_last_meal = get_current_time();
 	pthread_mutex_unlock(&p->meal_time_lock);
 	philo_thread_sleep(p->philo, p->philo->til_meal);
 	if (get_sim_stop(p->philo) == false)

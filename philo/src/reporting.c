@@ -38,6 +38,6 @@ void	print_status(t_philosopher *p, bool is_terminator, t_status status)
 		status_str = "aquired fork 2️⃣";
 
 	printf("%ld %d %s\n",
-		get_start_time() - p->philo->start_time, p->id + 1, status_str);
+		get_current_time() - p->philo->start_time, p->id + 1, status_str);
 	pthread_mutex_unlock(&p->philo->write_lock);
 }

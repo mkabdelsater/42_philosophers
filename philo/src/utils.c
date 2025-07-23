@@ -1,7 +1,7 @@
 #include "../inc/philo.h"
 
 // ! ??? why time in ms?
-time_t	get_start_time(void)
+time_t	get_current_time(void)
 {
 	struct timeval		teval;
 	gettimeofday(&teval, NULL);
@@ -11,7 +11,7 @@ time_t	get_start_time(void)
 // ! ??? this is used for synchronization?
 void	delay_thread(time_t t)
 {
-	while (get_start_time() < t)
+	while (get_current_time() < t)
 		continue ;
 }
 
