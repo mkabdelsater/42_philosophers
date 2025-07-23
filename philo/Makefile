@@ -9,7 +9,7 @@ SRC_PATH	= src/
 OBJ_PATH	= obj/
 
 SRC		=	main.c utils.c ft_atoi.c setup.c cleanup.c conclude.c reporting.c \
-
+			routines.c
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)
 OBJS	= $(addprefix $(OBJ_PATH), $(OBJ))

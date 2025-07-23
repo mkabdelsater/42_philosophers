@@ -77,7 +77,9 @@ void	delay_thread(time_t t);
 
 // * cleanup *
 void	free_philo(t_philo *philo);
+void	destroy_mutexes(t_philo *philo);
 
-
+// * actions *
+void	*philo_actions(t_philosopher *p);
 
 #endif

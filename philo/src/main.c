@@ -1,7 +1,7 @@
 #include "../inc/philo.h"
 
-static void	start_sim(t_philo *philo);
-static void stop_sim(t_philo *philo);
+static bool	start_sim(t_philo *philo);
+static void end_sim(t_philo *philo);
 static bool arg_has_non_digits(char *str);
 
 int	main(int ac, char **av)
@@ -14,9 +14,9 @@ int	main(int ac, char **av)
 	philo = set_the_table(ac, av);
 	if (!philo)
 		return(err_out("Failed to Set the Table"), EXIT_FAILURE);
-	// if (!start_simulation(philo))
-	// 	err_out("Couldn't start the simulation");
-	// end_simulation(philo);
+	if (!start_sim(philo))
+		return (err_out("Couldn't start the simulation"), EXIT_FAILURE);
+	end_sim(philo);
 	return (EXIT_SUCCESS);
 }
 
@@ -26,11 +26,11 @@ static bool start_sim(t_philo *philo)
 	int	res;
 
 	i = 0;
-	philo->start_time = get_start_time() + (philo->philo_count * 200);
+	philo->start_time = get_start_time() + (philo->philo_count * 20);
 	while (i < philo->philo_count)
 	{
 		res = pthread_create(&philo->philosophers[i]->thread,
-			NULL, &p_routines, philo->philosophers);
+			NULL, &philo_actions, philo->philosophers);
 		if (res != 0)
 			return (err_free("philo thread creation failed", philo), false);
 		i++;
@@ -40,6 +40,22 @@ static bool start_sim(t_philo *philo)
 			return (err_free("terminator thread create failed", philo), false);
 	return (true);
 
+}
+
+static void end_sim(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->philo_count)
+	{
+		pthread_join(philo->philosophers[i]->thread, NULL);
+		i++;
+	}
+	if (philo->philo_count > 1)
+		pthread_join(philo->terminator, NULL);
+	destroy_mutexes(philo);
+	free_philo(philo);
 }
 
 static bool arg_has_non_digits(char *str)
@@ -76,9 +92,3 @@ void	validate_input(int ac, char **av)
 		i++;
 	}
 }
-
-// static void start_simulation(t_philo *philo)
-// {
-// 	int	i;
-// 	philo->start_time;
-// }
