@@ -70,6 +70,7 @@ void	err_free(char *msg, t_philo *philo);
 
 // * reporting *
 bool	get_sim_stop(t_philo *philo);
+void	print_status(t_philosopher *p, bool is_terminator, t_status status);
 
 // * time *
 time_t	get_start_time(void);
