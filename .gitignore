@@ -1,12 +1,12 @@
 # Build artifacts
 philo
 philo_bonus
-/tester
+!/philo_bonus
+**/tester
 *.o
 **/*.o
-
-*.ko
 **/*.obj
+*.ko
 *.elf
 
 # Linker output
