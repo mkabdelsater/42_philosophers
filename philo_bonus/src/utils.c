@@ -27,3 +27,9 @@ void	err_out(char *msg)
 {
 	printf(RED"Error:"NC" %s\n", msg);
 }
+
+void	print_err_exit(char *msg)
+{
+	err_out(msg);
+	exit(EXIT_FAILURE);
+}
