@@ -7,7 +7,7 @@ static void p_act_eat_sleep(t_philosopher *p);
 
 /**
  * * philos with even numbers start by thinking, delaying their
- * * meal time by a small margin, this lets odds grap their forks
+ * * meal time by a small margin, this lets odds grab their forks
  * * first
  * ! but didn't we already solve this?
  * TODO: try removing the odd number thing
@@ -30,9 +30,10 @@ void	*p_act_init_cycle(void *phl)
 	if (p->philo->philo_count == 1)
 		return (p_act_alone(p), NULL);
 	else if (p->id % 2 != 0)
-		p_act_think(p, true);
+		p_act_think(p, false);
 	while (!get_sim_stop(p->philo))
 	{
+		printf("initiating action cycle\n");
 		p_act_eat_sleep(p);
 		p_act_think(p, false);
 	}
@@ -61,7 +62,7 @@ static void p_act_think(t_philosopher *p, bool quiet)
 				- p->philo->til_meal) / 2;
 	pthread_mutex_unlock(&p->meal_time_lock);
 	if (til_think < 0)
-		til_think < 0;
+		til_think = 0;
 	if (til_think == 0 && quiet == true)
 		til_think = 1;
 	// WHAT ARE YOU ON ABOUT!!!???

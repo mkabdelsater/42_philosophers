@@ -53,7 +53,7 @@ void	*terminator(void *data)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)philo;
+	philo = (t_philo *)data;
 
 	if (philo->max_meals == 0)
 		return (NULL);

@@ -9,7 +9,7 @@ int	main(int ac, char **av)
 	t_philo	*philo;
 
 	if (ac < 5 || ac > 6)
-		err_out(MSG_USAGE);
+		return (err_out(MSG_USAGE), EXIT_FAILURE);
 	validate_input(ac, av);
 	philo = set_the_table(ac, av);
 	if (!philo)
@@ -30,16 +30,15 @@ static bool start_sim(t_philo *philo)
 	while (i < philo->philo_count)
 	{
 		res = pthread_create(&philo->philosophers[i]->thread,
-			NULL, &p_act_init_cycle, philo->philosophers);
+			NULL, &p_act_init_cycle, philo->philosophers[i]);
 		if (res != 0)
 			return (err_free("philo thread creation failed", philo), false);
 		i++;
 	}
-	if (philo->philo_count &&
+	if (philo->philo_count > 1 &&
 		pthread_create(&philo->terminator, NULL, &terminator, philo) != 0)
 			return (err_free("terminator thread create failed", philo), false);
 	return (true);
-
 }
 
 static void end_sim(t_philo *philo)
@@ -83,12 +82,21 @@ void	validate_input(int ac, char **av)
 	{
 		arg = av[i];
 		if (arg_has_non_digits(arg))
+		{
 			err_out(ERR_NON_INT);
+			exit(EXIT_FAILURE);
+		}
 		nbr = ft_atoi(arg);
 		if (nbr <= 0)
+		{
 			err_out(ERR_NON_INT);
+			exit(EXIT_FAILURE);
+		}
 		if (i == 1 && (nbr <= 0 || nbr > PHILO_CAP))
+		{
 			err_out("number of philosophers exceeds cap ("STR_PHILO_CAP")");
+			exit(EXIT_FAILURE);
+		}
 		i++;
 	}
 }

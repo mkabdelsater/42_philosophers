@@ -3,7 +3,7 @@ CC			= cc
 DEBUG		= -fsanitize=thread -fsanitize=address -fsanitize=leak \
 				-fsanitize=undefined -g
 
-CFLAGS		= -Werror -Wall -Wextra -pthread DEBUG
+CFLAGS		= -Werror -Wall -Wextra -pthread
 
 SRC_PATH	= src/
 OBJ_PATH	= obj/

@@ -8,7 +8,7 @@ bool	get_sim_stop(t_philo *philo)
 	pthread_mutex_lock(&philo->sim_stop_lock);
 	if (philo->sim_stop)
 		res = true;
-	pthread_mutex_lock(&philo->sim_stop_lock);
+	pthread_mutex_unlock(&philo->sim_stop_lock);
 	return (res);
 }
 

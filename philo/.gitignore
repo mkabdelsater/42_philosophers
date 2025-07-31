@@ -1,8 +1,8 @@
 # Build artifacts
 philo
 philo_bonus
+/tester
 *.o
-
 **/*.o
 
 *.ko

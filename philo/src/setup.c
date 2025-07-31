@@ -23,6 +23,7 @@ static bool init_mutex_locks(t_philo *philo)
 	if (pthread_mutex_init(&philo->sim_stop_lock, 0) != 0 ||
 			pthread_mutex_init(&philo->write_lock, 0) != 0)
 		return (err_free("Failed to init mutexes", philo), false);
+	return (true);
 }
 
 // ? if we let philosophers take forks normally, having an odd number of philos
