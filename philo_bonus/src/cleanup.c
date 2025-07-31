@@ -34,3 +34,14 @@ void	destroy_mutexes(t_philo *philo)
 	pthread_mutex_destroy(&philo->write_lock);
 	pthread_mutex_destroy(&philo->sim_stop_lock);
 }
+
+void	handle_sem_error(t_philo *philo)
+{
+	sem_close(philo->forks);
+	sem_close(philo->write);
+	sem_close(philo->sated);
+	sem_close(philo->vital);
+	sem_close(philo->pause);
+	unlink_shared_semaphores();
+	err_free("Semaphore init failed", philo);
+}
