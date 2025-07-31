@@ -7,12 +7,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <sys/wait.h>
-# include <sys/stat.h>
 # include <stdbool.h>
-# include <semaphore.h>
-# include <signal.h>
-# include <fcntl.h>
 
 # define PHILO_CAP 200
 # define STR_PHILO_CAP "200"
@@ -31,42 +26,29 @@ typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
 {
-	t_philosopher	*this_guy;
-	t_philosopher	**philosophers;
-	pthread_t		terminator_full;
-	pthread_t		terminator_hunger;
+	int	philo_count;
+	time_t			start_time;
+	time_t			til_death;
 	time_t			til_meal;
 	time_t			til_sleep;
-	time_t			til_death;
-	time_t			start_time;
-	sem_t			*stop;
-	sem_t			*forks;
-	sem_t			*write;
-	sem_t			*vitals;
-	sem_t			*satiety;
-	pid_t			*arr_pid;
 	int				max_meals;
-	int				sated_phils;
-	int				philo_count;
 	bool			sim_stop;
+	pthread_mutex_t	sim_stop_lock;
+	pthread_mutex_t	write_lock;
+	pthread_mutex_t	*fork_locks;
+	t_philosopher	**philosophers;
+	pthread_t		terminator;
 }	t_philo;
 
 typedef struct s_philosopher
 {
-	pthread_t	terminator;
-	pthread_t	thread;
-	t_philo		*philo;
-	time_t		since_last_meal;
-	sem_t		*forks;
-	sem_t		*write;
-	sem_t		*vitals;
-	sem_t		*satiety;
-	sem_t		*meal_time;
-	int			id;
-	int			meals_had;
-	int			forks_held;
-	char		*meal_name;
-	bool		sated;
+	pthread_t			thread;
+	int		id;
+	int		meals_had;
+	int		fork[2];
+	pthread_mutex_t		meal_time_lock;
+	time_t				since_last_meal;
+	t_philo				*philo;
 }	t_philosopher;
 
 typedef enum e_status
@@ -100,7 +82,7 @@ void	destroy_mutexes(t_philo *philo);
 
 // * actions *
 void	*p_act_init_cycle(void *p);
-void	*terminator_hunger(void *data);
+void	*terminator(void *data);
 t_philo	*set_the_table(int ac, char **av);
 
 #endif
