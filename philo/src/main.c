@@ -36,8 +36,8 @@ static bool start_sim(t_philo *philo)
 		i++;
 	}
 	if (philo->philo_count > 1 &&
-		pthread_create(&philo->terminator, NULL, &terminator, philo) != 0)
-			return (err_free("terminator thread create failed", philo), false);
+		pthread_create(&philo->terminator_hunger, NULL, &terminator_hunger, philo) != 0)
+			return (err_free("terminator_hunger thread create failed", philo), false);
 	return (true);
 }
 
@@ -52,7 +52,7 @@ static void end_sim(t_philo *philo)
 		i++;
 	}
 	if (philo->philo_count > 1)
-		pthread_join(philo->terminator, NULL);
+		pthread_join(philo->terminator_hunger, NULL);
 	destroy_mutexes(philo);
 	free_philo(philo);
 }
