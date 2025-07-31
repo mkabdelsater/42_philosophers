@@ -1,4 +1,4 @@
-NAME		= philo
+NAME		= philo_bonus
 CC			= cc
 DEBUG		= -fsanitize=thread -fsanitize=address -fsanitize=leak \
 				-fsanitize=undefined -g

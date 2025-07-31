@@ -33,7 +33,6 @@ void	*p_act_init_cycle(void *phl)
 		p_act_think(p, false);
 	while (!get_sim_stop(p->philo))
 	{
-		printf("initiating action cycle\n");
 		p_act_eat_sleep(p);
 		p_act_think(p, false);
 	}
@@ -100,6 +99,7 @@ static void p_act_eat_sleep(t_philosopher *p)
 // being used meaningfully
 static void p_act_alone(t_philosopher *p)
 {
+	printf(RED"お前はもう死んでいる\n"NC);
 	pthread_mutex_lock(&p->philo->fork_locks[p->fork[0]]);
 	print_status(p, false, HAS_FORK_1);
 	philo_thread_sleep(p->philo, p->philo->til_death);
