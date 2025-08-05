@@ -5,10 +5,9 @@ bool	get_sim_stop(t_philo *philo)
 	bool	res;
 
 	res = false;
-	pthread_mutex_lock(&philo->sim_stop_lock);
-	if (philo->sim_stop)
-		res = true;
-	pthread_mutex_unlock(&philo->sim_stop_lock);
+	sem_wait(philo->sem_stops);
+	res = philo->sim_stop;
+	sem_post(philo->sem_stops);
 	return (res);
 }
 

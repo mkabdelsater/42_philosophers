@@ -58,7 +58,7 @@ static void end_sim(t_philo *philo)
 		i++;
 	}
 	if (philo->philo_count > 1)
-		pthread_join(philo->terminator_hunger, NULL);
+		pthread_join(philo->hunger_terminator, NULL);
 	destroy_mutexes(philo);
 	free_philo(philo);
 }

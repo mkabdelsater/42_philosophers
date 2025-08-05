@@ -8,7 +8,7 @@ CFLAGS		= -Werror -Wall -Wextra -pthread
 SRC_PATH	= src/
 OBJ_PATH	= obj/
 
-SRC		=	main.c ft_atoi.c setup.c cleanup.c conclude.c reporting.c \
+SRC		=	main.c ft_atoi.c setup.c cleanup.c terminator.c reporting.c \
 			routines.c ft_strcat.c utils_1.c utils_2.c intercom.c
 SRCS	= $(addprefix $(SRC_PATH), $(SRC))
 OBJ		= $(SRC:.c=.o)

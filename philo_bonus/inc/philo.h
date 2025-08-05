@@ -45,8 +45,8 @@ typedef struct s_philo
 {
 	t_philosopher	*running_proc;
 	t_philosopher	**philosophers;
-	pthread_t		terminator_full;
-	pthread_t		terminator_hunger;
+	pthread_t		sated_terminator;
+	pthread_t		hunger_terminator;
 	time_t			til_meal;
 	time_t			til_sleep;
 	time_t			til_death;
@@ -113,7 +113,7 @@ void	exit_philo_proc(t_philo *philo, int exit_code);
 
 // * actions *
 void	*p_act_init_cycle(void *p);
-void	*terminator_hunger(void *data);
+void	*hunger_terminator(void *data);
 void	p_act_grab_fork(t_philosopher *p);
 void	philo_proc_sleep(time_t duration);
 t_philo	*set_the_table(int ac, char **av);
