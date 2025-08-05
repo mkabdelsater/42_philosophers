@@ -2,7 +2,7 @@
 
 static bool	start_sim(t_philo *philo);
 static int	end_sim(t_philo *philo);
-static bool	arg_has_non_digits(char *str);
+static int	kill_the_child(t_philo *philo, pid_t *pid);
 
 int	main(int ac, char **av)
 {
@@ -80,20 +80,6 @@ static int end_sim(t_philo *philo)
 		}
 	}
 	return (0);
-}
-
-static bool arg_has_non_digits(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (true);
-		i++;
-	}
-	return (false);
 }
 
 // ? waits for a philo process to exit, if it does so with an error

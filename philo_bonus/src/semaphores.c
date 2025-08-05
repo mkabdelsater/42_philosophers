@@ -1,8 +1,18 @@
 #include "../inc/philo.h"
 
 
-// ? flag meaning in fcntl.h (just hover over them in VSC)
+void	unlink_shared_semaphores(void)
+{
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_WRITE);
+	sem_unlink(SEM_SATED);
+	sem_unlink(SEM_VITAL);
+	sem_unlink(SEM_PAUSE);
+}
 
+// ? flag meaning in fcntl.h (just hover over them in VSC)
+// ? the reason we need to unlink is that semaphores are created as files in
+// ? tmp/
 bool	init_shared_semaphores(t_philo *philo)
 {
 	unlink_shared_semaphores();
@@ -25,15 +35,6 @@ bool	init_shared_semaphores(t_philo *philo)
 	if (philo->sem_stops == SEM_FAILED)
 		return (handle_sem_error(philo), false);
 	return (true);
-}
-
-void	unlink_shared_semaphores(void)
-{
-	sem_unlink(SEM_FORKS);
-	sem_unlink(SEM_WRITE);
-	sem_unlink(SEM_SATED);
-	sem_unlink(SEM_VITAL);
-	sem_unlink(SEM_PAUSE);
 }
 
 void	philo_proc_sleep(time_t duration)

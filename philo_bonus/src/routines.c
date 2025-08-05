@@ -13,7 +13,7 @@ static void	p_act_alone(t_philosopher *p);
  * TODO: try removing the odd number thing
  */
 
-void	*p_act_init_cycle(t_philo *philo)
+void	p_act_init_cycle(t_philo *philo)
 {
 	t_philosopher	*p;
 
@@ -93,7 +93,7 @@ static void p_act_eat_sleep(t_philosopher *p)
 // being used meaningfully
 static void p_act_alone(t_philosopher *p)
 {
-	p->sated = sem_open(SEM_SATED, O_CREAT, S_IRUSR | S_IWUSR,
+	p->sem_sated = sem_open(SEM_SATED, O_CREAT, S_IRUSR | S_IWUSR,
 		p->philo->philo_count);
 	if (p->sem_sated == SEM_FAILED)
 	{
@@ -103,7 +103,7 @@ static void p_act_alone(t_philosopher *p)
 	delay_thread(p->philo->start_time);
 	if (p->philo->max_meals == 0)
 	{
-		sem_post(p->sated);
+		sem_post(p->sem_sated);
 		exit(EXIT_PHILO_SATED);
 	}
 	print_status(p, false, HAS_FORK_1);

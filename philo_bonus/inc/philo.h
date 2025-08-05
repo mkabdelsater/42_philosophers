@@ -92,43 +92,47 @@ typedef enum e_status
 }	t_status;
 
 // * utils *
+char	*ft_strcat(char *dest, char *src);
+char	*ft_itoa(int nbr, int len);
 int		ft_atoi(const char *nptr);
-char	*ft_strcat(char *dest, const char *src);
-void	err_out(char *msg);
+int		ft_strlen(char *s);
+bool	arg_has_non_digits(char *str);
 void	err_free(char *msg, t_philo *philo);
 void	validate_input(int ac, char **av);
 void	print_err_exit(char *msg);
+void	err_out(char *msg);
+
 
 // * reporting *
-bool	get_sim_stop(t_philo *philo);
 void	print_status(t_philosopher *p, bool is_terminator, t_status status);
+bool	get_sim_stop(t_philo *philo);
 
 // * time *
 time_t	get_current_time(void);
 void	delay_thread(time_t t);
 
 // * cleanup *
-void	free_philo(t_philo *philo);
 void	exit_philo_proc(t_philo *philo, int exit_code);
+void	free_philo(t_philo *philo);
 
 // * actions *
-void	*p_act_init_cycle(t_philo *p);
+void	p_act_init_cycle(t_philo *p);
 void	*hunger_terminator(void *data);
 void	p_act_grab_fork(t_philosopher *p);
 void	philo_proc_sleep(time_t duration);
 t_philo	*set_the_table(int ac, char **av);
 
 // * semaphores *
-bool	init_shared_semaphores(t_philo *philo);
 void	unlink_shared_semaphores(void);
-void	handle_sem_error(t_philo *philo);
 void	init_intercom(t_philo *philo, t_philosopher *p);
+void	handle_sem_error(t_philo *philo);
 void	sem_cleanup(t_philo *philo);
+bool	init_shared_semaphores(t_philo *philo);
 
 // * terminators *
-void		*proc_terminator(void *data);
 void		*hunger_terminator(void *data);
 void		*sated_terminator(void *data);
+void		*proc_terminator(void *data);
 int			kill_philo_processes(t_philo *philo, int exit_code);
 bool		activate_terminators(t_philo *philo);
 

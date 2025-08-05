@@ -2,7 +2,7 @@
 
 // ? if you don't do *name = '\0' you get an invalid free because of strcat (?)
 
-char	*create_unique_sem_name(const char *str, int id)
+char	*create_unique_sem_name(char *str, int id)
 {
 	char	*name;
 	char	*temp;
@@ -16,11 +16,11 @@ char	*create_unique_sem_name(const char *str, int id)
 
 	i = ft_strlen(str) + digits;
 	name = malloc (sizeof(char) * (i + 1));
-	if (name == NULL);
+	if (name == NULL)
 		return (err_out("Alloc failure for sem_name"), NULL);
 	*name = '\0';
 	name = ft_strcat(name, str);
-	temp = ft_atoi(id);
+	temp = ft_itoa(id, digits);
 	name = ft_strcat(name, temp);
 	free(temp);
 	return (name);
