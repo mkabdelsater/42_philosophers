@@ -21,3 +21,18 @@ void	p_act_grab_fork(t_philosopher *p)
 		print_status(p, false, HAS_FORK_2);
 	sem_post(p->sem_meals);
 }
+
+bool	activate_terminators(t_philo *philo)
+{
+	int	res;
+
+	res = pthread_create(&philo->hunger_terminator,
+			NULL, &hunger_terminator, philo);
+	if (res != 0)
+		return (err_free("failed to create hunger terminator", philo), false);
+	res = pthread_create(&philo->sated_terminator,
+			NULL, &sated_terminator, philo);
+	if (res != 0)
+		return (err_free("failed to create sated terminator", philo), false);
+	return (true);
+}

@@ -13,7 +13,7 @@ static void	p_act_alone(t_philosopher *p);
  * TODO: try removing the odd number thing
  */
 
-void	p_act_init_cycle(t_philo *philo)
+void	*p_act_init_cycle(t_philo *philo)
 {
 	t_philosopher	*p;
 

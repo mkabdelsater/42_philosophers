@@ -112,7 +112,7 @@ void	free_philo(t_philo *philo);
 void	exit_philo_proc(t_philo *philo, int exit_code);
 
 // * actions *
-void	*p_act_init_cycle(void *p);
+void	*p_act_init_cycle(t_philo *p);
 void	*hunger_terminator(void *data);
 void	p_act_grab_fork(t_philosopher *p);
 void	philo_proc_sleep(time_t duration);
@@ -129,5 +129,6 @@ void		*proc_terminator(void *data);
 void		*hunger_terminator(void *data);
 void		*sated_terminator(void *data);
 int			kill_philo_processes(t_philo *philo, int exit_code);
+bool		activate_terminators(t_philo *philo);
 
 #endif
