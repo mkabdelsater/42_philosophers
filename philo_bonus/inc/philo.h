@@ -34,6 +34,11 @@
 # define SEM_PAUSE "/moabdels_philo_pause"
 # define SEM_MEALS "/moabdels_philo_meals"
 
+# define EXIT_PTHREAD_ERR 40
+# define EXIT_SEM_ERR 41
+# define EXIT_PHILO_SATED 42
+# define EXIT_PHILO_DEATH 43
+
 typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
@@ -46,11 +51,11 @@ typedef struct s_philo
 	time_t			til_sleep;
 	time_t			til_death;
 	time_t			start_time;
-	sem_t			*pause;
-	sem_t			*forks;
-	sem_t			*write;
-	sem_t			*vital;
-	sem_t			*sated;
+	sem_t			*sem_stops;
+	sem_t			*sem_forks;
+	sem_t			*sem_write;
+	sem_t			*sem_death;
+	sem_t			*sem_sated;
 	pid_t			*arr_pid;
 	int				max_meals;
 	int				sated_phils;
@@ -60,15 +65,15 @@ typedef struct s_philo
 
 typedef struct s_philosopher
 {
-	pthread_t	terminator_hunger;
+	pthread_t	proc_terminator;
 	pthread_t	thread;
 	t_philo		*philo;
 	time_t		since_last_meal;
-	sem_t		*forks;
-	sem_t		*write;
-	sem_t		*vital;
-	sem_t		*sated;
-	sem_t		*meals;
+	sem_t		*sem_forks;
+	sem_t		*sem_write;
+	sem_t		*sem_death;
+	sem_t		*sem_sated;
+	sem_t		*sem_meals;
 	int			id;
 	int			meals_had;
 	int			forks_held;
@@ -104,7 +109,7 @@ void	delay_thread(time_t t);
 
 // * cleanup *
 void	free_philo(t_philo *philo);
-void	destroy_mutexes(t_philo *philo);
+void	exit_philo_proc(t_philo *philo, int exit_code);
 
 // * actions *
 void	*p_act_init_cycle(void *p);
