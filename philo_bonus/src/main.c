@@ -1,12 +1,13 @@
 #include "../inc/philo.h"
 
 static bool	start_sim(t_philo *philo);
-static void end_sim(t_philo *philo);
-static bool arg_has_non_digits(char *str);
+static int	end_sim(t_philo *philo);
+static bool	arg_has_non_digits(char *str);
 
 int	main(int ac, char **av)
 {
 	t_philo	*philo;
+	int		res;
 
 	if (ac < 5 || ac > 6)
 		return (err_out(MSG_USAGE), EXIT_FAILURE);
@@ -16,7 +17,12 @@ int	main(int ac, char **av)
 		return(err_out("Failed to Set the Table"), EXIT_FAILURE);
 	if (!start_sim(philo))
 		return (err_out("Couldn't start the simulation"), EXIT_FAILURE);
-	end_sim(philo);
+	res = end_sim(philo);
+	sem_cleanup(philo);
+	free_philo(philo);
+
+	if (res == -1)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -47,20 +53,33 @@ static bool start_sim(t_philo *philo)
 	return (true);
 }
 
-static void end_sim(t_philo *philo)
+static int end_sim(t_philo *philo)
 {
 	int	i;
+	int	exit_code;
 
-	i = 0;
-	while (i < philo->philo_count)
+	delay_thread(philo->start_time);
+	while (get_sim_stop(philo) == false)
 	{
-		pthread_join(philo->philosophers[i]->thread, NULL);
-		i++;
+		i = 0;
+		while (i < philo->philo_count)
+		{
+			exit_code = kill_the_child(philo, &philo->arr_pid[i]);
+			if (exit_code == 0)
+			{
+				i++;
+				continue ;
+			}
+			sem_wait(philo->sem_stops);
+			philo->sim_stop = true;
+			sem_post(philo->sem_sated);
+			sem_post(philo->sem_death);
+			sem_post(philo->sem_stops);
+			return (exit_code);
+			i++;
+		}
 	}
-	if (philo->philo_count > 1)
-		pthread_join(philo->hunger_terminator, NULL);
-	destroy_mutexes(philo);
-	free_philo(philo);
+	return (0);
 }
 
 static bool arg_has_non_digits(char *str)
@@ -77,3 +96,26 @@ static bool arg_has_non_digits(char *str)
 	return (false);
 }
 
+// ? waits for a philo process to exit, if it does so with an error
+// ? then kill all other philo processes
+static int	kill_the_child(t_philo *philo, pid_t *pid)
+{
+	int	philo_exit_code;
+	int	exit_code;
+
+	if (*pid && waitpid(*pid, &philo_exit_code, WNOHANG) != 0
+			&& WIFEXITED(philo_exit_code))
+	{
+		exit_code = WEXITSTATUS(philo_exit_code);
+		if (exit_code == EXIT_PHILO_DEATH)
+			return (kill_philo_processes(philo, 1));
+		if (exit_code == EXIT_PTHREAD_ERR || exit_code == EXIT_SEM_ERR)
+			return (kill_philo_processes(philo, -1));
+		if (exit_code == EXIT_PHILO_SATED)
+		{
+			philo->sated_phils += 1;
+			return (1);
+		}
+	}
+	return (0);
+}

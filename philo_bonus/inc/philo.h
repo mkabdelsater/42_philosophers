@@ -123,6 +123,7 @@ bool	init_shared_semaphores(t_philo *philo);
 void	unlink_shared_semaphores(void);
 void	handle_sem_error(t_philo *philo);
 void	init_intercom(t_philo *philo, t_philosopher *p);
+void	sem_cleanup(t_philo *philo);
 
 // * terminators *
 void		*proc_terminator(void *data);

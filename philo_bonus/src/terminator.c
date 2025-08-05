@@ -83,7 +83,7 @@ int			kill_philo_processes(t_philo *philo, int exit_code)
 		kill(philo->arr_pid[i], SIGKILL);
 		i++;
 	}
-	exit(exit_code);
+	return (exit_code);
 }
 
 static bool	can_conclude(t_philo *philo, t_philosopher *p)

@@ -6,33 +6,22 @@ void	free_philo(t_philo *philo)
 
 	if(!philo)
 		return ;
-	if (philo->fork_locks)
-		free(philo->fork_locks);
+	if (philo->arr_pid)
+		free(philo->arr_pid);
 	if (!philo->philosophers)
 		return (free(philo));
-
 	i = 0;
 	while (i < philo->philo_count)
 	{
-		if (philo->philosophers[i])
-			free(philo->philosophers[i]);
+		if (philo->philosophers[i] == NULL && i++)
+			continue ;
+		if (philo->philosophers[i]->meals_sem_name)
+			free(philo->philosophers[i]->meals_sem_name);
+		free(philo->philosophers[i]);
 		i++;
 	}
 	free(philo->philosophers);
 	free(philo);
-}
-
-void	destroy_mutexes(t_philo *philo)
-{
-	int	i;
-	while (i < philo->philo_count)
-	{
-		pthread_mutex_destroy(&philo->fork_locks[i]);
-		pthread_mutex_destroy(&philo->philosophers[i]->meal_time_lock);
-		i++;
-	}
-	pthread_mutex_destroy(&philo->write_lock);
-	pthread_mutex_destroy(&philo->sim_stop_lock);
 }
 
 void	handle_sem_error(t_philo *philo)
@@ -64,4 +53,18 @@ void	exit_philo_proc(t_philo *philo, int exit_code)
 	sem_close(philo->running_proc->sem_meals);
 	free_philo(philo);
 	exit(exit_code);
+}
+
+void	sem_cleanup(t_philo *philo)
+{
+	if (!philo)
+		return ;
+	pthread_join(philo->sated_terminator, NULL);
+	pthread_join(philo->hunger_terminator, NULL);
+	sem_close(philo->sem_forks);
+	sem_close(philo->sem_write);
+	sem_close(philo->sem_sated);
+	sem_close(philo->sem_death);
+	sem_close(philo->sem_stops);
+	unlink_shared_semaphores();
 }
