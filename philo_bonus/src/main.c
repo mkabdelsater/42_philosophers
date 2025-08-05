@@ -77,32 +77,3 @@ static bool arg_has_non_digits(char *str)
 	return (false);
 }
 
-void	validate_input(int ac, char **av)
-{
-	int		i;
-	int		nbr;
-	char	*arg;
-
-	i = 1;
-	while (i < ac)
-	{
-		arg = av[i];
-		if (arg_has_non_digits(arg))
-		{
-			err_out(ERR_NON_INT);
-			exit(EXIT_FAILURE);
-		}
-		nbr = ft_atoi(arg);
-		if (nbr <= 0)
-		{
-			err_out(ERR_NON_INT);
-			exit(EXIT_FAILURE);
-		}
-		if (i == 1 && (nbr <= 0 || nbr > PHILO_CAP))
-		{
-			err_out("number of philosophers exceeds cap ("STR_PHILO_CAP")");
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-}
