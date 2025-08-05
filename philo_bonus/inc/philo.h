@@ -118,11 +118,16 @@ void	p_act_grab_fork(t_philosopher *p);
 void	philo_proc_sleep(time_t duration);
 t_philo	*set_the_table(int ac, char **av);
 
-
 // * semaphores *
 bool	init_shared_semaphores(t_philo *philo);
 void	unlink_shared_semaphores(void);
 void	handle_sem_error(t_philo *philo);
 void	init_intercom(t_philo *philo, t_philosopher *p);
+
+// * terminators *
+void		*proc_terminator(void *data);
+void		*hunger_terminator(void *data);
+void		*sated_terminator(void *data);
+int			kill_philo_processes(t_philo *philo, int exit_code);
 
 #endif

@@ -17,12 +17,7 @@ void	print_status(t_philosopher *p, bool is_terminator, t_status status)
 {
 	char	*status_str;
 
-	pthread_mutex_lock(&p->philo->write_lock);
-	if (get_sim_stop(p->philo) && !is_terminator)
-	{
-		pthread_mutex_unlock(&p->philo->write_lock);
-		return ;
-	}
+	sem_wait(p->sem_write);
 	if (status == DEAD)
 		status_str = RED"FKNG DIED 💀"NC;
 	else if (status == EATING)
@@ -35,8 +30,8 @@ void	print_status(t_philosopher *p, bool is_terminator, t_status status)
 		status_str = "aquired fork 1️⃣";
 	else if (status == HAS_FORK_2)
 		status_str = "aquired fork 2️⃣";
-
 	printf("%ld %d %s\n",
 		get_current_time() - p->philo->start_time, p->id + 1, status_str);
-	pthread_mutex_unlock(&p->philo->write_lock);
+	if (!is_terminator)
+		sem_post(p->sem_write);
 }
