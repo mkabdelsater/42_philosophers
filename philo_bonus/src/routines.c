@@ -12,32 +12,18 @@ static void p_act_eat_sleep(t_philosopher *p);
  * ! but didn't we already solve this?
  * TODO: try removing the odd number thing
  */
-void	*p_act_init_cycle(void *phl)
+void	p_act_init_cycle(t_philo *philo)
 {
 	t_philosopher	*p;
-
-	p = (t_philosopher*)phl;
-	if (p->philo->max_meals == 0)
-		return (NULL);
-	pthread_mutex_lock(&p->meal_time_lock);
-	p->since_last_meal = p->philo->start_time;
-	pthread_mutex_unlock(&p->meal_time_lock);
-	delay_thread(p->philo->start_time);
-	//when does this happen? if at time of death why exactly 0?
-	// why are we doing this?
-	if (p->philo->til_death == 0)
-		return (NULL);
+	p = philo->running_proc;
 	if (p->philo->philo_count == 1)
-		return (p_act_alone(p), NULL);
-	else if (p->id % 2 != 0)
-		p_act_think(p, false);
-	while (!get_sim_stop(p->philo))
+		p_act_alone(p);
+	init_intercom(philo, p);
+	if (p->philo->max_meals == 0)
 	{
-		printf("initiating action cycle\n");
-		p_act_eat_sleep(p);
-		p_act_think(p, false);
+		sem_post(p->sated);
+		child_exit(philo, )
 	}
-	return (NULL);
 }
 
 void	philo_thread_sleep(t_philo *philo, time_t duration)

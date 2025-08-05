@@ -38,7 +38,7 @@ static bool start_sim(t_philo *philo)
 			philo->arr_pid[i] = pid;
 		else if (pid == 0)
 		{
-			philo->this_guy = philo->philosophers[i];
+			philo->running_proc = philo->philosophers[i];
 			p_act_init_cycle(philo);
 		}
 	}

@@ -38,7 +38,7 @@ typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
 {
-	t_philosopher	*this_guy;
+	t_philosopher	*running_proc;
 	t_philosopher	**philosophers;
 	pthread_t		terminator_full;
 	pthread_t		terminator_hunger;

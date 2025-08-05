@@ -45,3 +45,8 @@ void	handle_sem_error(t_philo *philo)
 	unlink_shared_semaphores();
 	err_free("Semaphore init failed", philo);
 }
+
+void	exit_philo_proc(t_philo *philo, int code)
+{
+	sem_post(philo->running_proc->)
+}
