@@ -27,6 +27,13 @@
 <time to eat> <time to sleep> <optional: number of meals to stop after>\n"
 # define ERR_NON_INT "only positive integers are valid arguments, try again."
 
+# define SEM_FORKS "/moabdels_philo_forks"
+# define SEM_WRITE "/moabdels_philo_write"
+# define SEM_SATED "/moabdels_philo_sated"
+# define SEM_VITAL "/moabdels_philo_vital"
+# define SEM_PAUSE "/moabdels_philo_pause"
+# define SEM_MEALS "/moabdels_philo_meals"
+
 typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
@@ -39,11 +46,11 @@ typedef struct s_philo
 	time_t			til_sleep;
 	time_t			til_death;
 	time_t			start_time;
-	sem_t			*stop;
+	sem_t			*pause;
 	sem_t			*forks;
 	sem_t			*write;
-	sem_t			*vitals;
-	sem_t			*satiety;
+	sem_t			*vital;
+	sem_t			*sated;
 	pid_t			*arr_pid;
 	int				max_meals;
 	int				sated_phils;
@@ -59,13 +66,13 @@ typedef struct s_philosopher
 	time_t		since_last_meal;
 	sem_t		*forks;
 	sem_t		*write;
-	sem_t		*vitals;
-	sem_t		*satiety;
-	sem_t		*meal_time;
+	sem_t		*vital;
+	sem_t		*sated;
+	sem_t		*meals;
 	int			id;
 	int			meals_had;
 	int			forks_held;
-	char		*meal_name;
+	char		*meals_sem_name;
 	bool		sated;
 }	t_philosopher;
 
@@ -81,10 +88,11 @@ typedef enum e_status
 
 // * utils *
 int		ft_atoi(const char *nptr);
+char	*ft_strcat(char *dest, const char *src);
 void	err_out(char *msg);
 void	err_free(char *msg, t_philo *philo);
 void	validate_input(int ac, char **av);
-
+void	print_err_exit(char *msg);
 
 // * reporting *
 bool	get_sim_stop(t_philo *philo);
@@ -102,5 +110,10 @@ void	destroy_mutexes(t_philo *philo);
 void	*p_act_init_cycle(void *p);
 void	*terminator_hunger(void *data);
 t_philo	*set_the_table(int ac, char **av);
+
+// * semaphores *
+bool	init_shared_semaphores(t_philo *philo);
+void	unlink_shared_semaphores(void);
+void	handle_sem_error(t_philo *philo);
 
 #endif

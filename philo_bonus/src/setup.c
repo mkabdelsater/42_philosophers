@@ -1,89 +1,62 @@
 #include "../inc/philo.h"
 
-// ? pthread_mutex_init should always return 0
-static pthread_mutex_t	*alloc_fork_mutexes(t_philo *philo)
-{
-	pthread_mutex_t	*fork_locks;
-	int				i;
+// ? if you don't do *name = '\0' you get an invalid free because of strcat (?)
 
-	fork_locks = malloc(sizeof(pthread_mutex_t) * philo->philo_count);
-	i = 0;
-	if (!fork_locks)
-		return (err_free("failed to alloc in alloc_fork_...", philo), NULL);
-	while (i < philo->philo_count)
-		pthread_mutex_init(&fork_locks[i++], 0);
-	return (fork_locks);
+char	*create_unique_sem_name(const char *str, int id)
+{
+	char	*name;
+	char	*temp;
+	int		i;
+	int		digits;
+
+	digits = 1;
+	i = id;
+	while (i /= 10)
+		digits++;
+
+	i = ft_strlen(str) + digits;
+	name = malloc (sizeof(char) * (i + 1));
+	if (name == NULL);
+		return (err_out("Alloc failure for sem_name"), NULL);
+	*name = '\0';
+	name = ft_strcat(name, str);
+	temp = ft_atoi(id);
+	name = ft_strcat(name, temp);
+	free(temp);
+	return (name);
 }
 
-static bool init_mutex_locks(t_philo *philo)
-{
-	philo->fork_locks = alloc_fork_mutexes(philo);
-	if (!philo->fork_locks)
-		return (false);
-	if (pthread_mutex_init(&philo->sim_stop_lock, 0) != 0 ||
-			pthread_mutex_init(&philo->write_lock, 0) != 0)
-		return (err_free("Failed to init mutexes", philo), false);
-	return (true);
-}
-
-// ? if we let philosophers take forks normally, having an odd number of philos
-// ? causes the following problem, taking 3 philos for example, in one cycle:
-// ? p_0 takes f_0, p_1 takes f_1, p_2 takes f_2
-// ? each philo holds one fork, and attempts to take a fork held by the other
-// ? we get a deadlock right off the bat!
-// ? to avoid this, we make odd even numbered philos start by attempting to take
-// ? an odd fork, guarantteeing that either them or the next philo fails
-// ? to take a fork, we get:
-// ? p_0 wants f_0 then f_1
-// ? p_1 wants f_2 then f_1
-// ? p_2 wants f_2 then f_0, f_2 will have been taken, causing them to wait.
-
-static void assign_the_forks(t_philosopher *philosopher)
-{
-	int	ph_id;
-	int	philo_count;
-
-	ph_id = philosopher->id;
-	philo_count = philosopher->philo->philo_count;
-	if (ph_id % 2 == 1)
-	{
-		philosopher->fork[0] = (ph_id + 1) % philo_count;
-		philosopher->fork[1] = ph_id;
-	}
-	else
-	{
-		philosopher->fork[0] = ph_id;
-		philosopher->fork[1] = (ph_id + 1) % philo_count;
-	}
-}
+// TODO: explanation for meal_sem_name goes here
+// ?
+// ?
 
 static t_philosopher	**usher_the_guests(t_philo *philo)
 {
-	t_philosopher	**philosophers;
+	t_philosopher	**ps;
 	int				i;
 
-	philosophers = malloc(sizeof(t_philosopher) * philo->philo_count);
-	if (!philosophers)
+	ps = malloc(sizeof(t_philosopher) * (philo->philo_count + 1));
+	if (!ps)
 		return (err_free("failed to alloc in usher_the_guests", philo), NULL);
 	i = 0;
 	while (i < philo->philo_count)
 	{
-		philosophers[i] = malloc(sizeof(t_philosopher));
-		if (!philosophers[i])
+		ps[i] = malloc(sizeof(t_philosopher));
+		if (!ps[i])
 			return (err_free("failed to alloc in usher_the_guests", philo), NULL);
-		if (pthread_mutex_init(&philosophers[i]->meal_time_lock, 0) != 0)
-			return (err_free("call to pthread_mutex_init returnd nonzero",
-						philo), NULL);
-		philosophers[i]->philo = philo;
-		philosophers[i]->id = i;
-		philosophers[i]->meals_had = 0;
-		assign_the_forks(philosophers[i]);
+		ps[i]->philo = philo;
+		ps[i]->id = i;
+		ps[i]->meals_sem_name = \
+			create_unique_sem_name(SEM_MEALS, ps[i]->id + 1);
+		if (ps[i]->meals_sem_name == NULL)
+			return (err_free("failed to create meals_sem_name", philo), NULL);
+		ps[i]->meals_had = 0;
+		ps[i]->forks_held = 0;
+		ps[i]->sated = false;
 		i++;
 	}
-	return (philosophers);
+	return (ps);
 }
-
-// ? @16 do I check the max number of meals? if it's 0 I print "can't be 0"
 
 t_philo	*set_the_table(int ac, char **av)
 {
@@ -100,11 +73,13 @@ t_philo	*set_the_table(int ac, char **av)
 		philo->max_meals = ft_atoi(av[5]);
 	else
 		philo->max_meals = -1;
+	if (!init_shared_semaphores(philo))
+		return (NULL);
 	philo->philosophers = usher_the_guests(philo);
 	if (!philo->philosophers)
 		return (NULL);
-	if (!init_mutex_locks(philo))
-		return (NULL);
-	philo->sim_stop = false;
+	philo->arr_pid = malloc(sizeof(pid_t) * philo->philo_count);
+	if (!philo->arr_pid)
+		return (err_free("failed to allocate arr_pid", philo), NULL);
 	return (philo);
 }

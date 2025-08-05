@@ -20,24 +20,25 @@ int	main(int ac, char **av)
 	return (EXIT_SUCCESS);
 }
 
+// ? each philo is now it's own process, hence fork.
+
 static bool start_sim(t_philo *philo)
 {
-	int	i;
-	int	res;
+	int		i;
+	pid_t	pid;
 
-	i = 0;
 	philo->start_time = get_current_time() + (philo->philo_count * 20);
-	while (i < philo->philo_count)
+	i = 0;
+	while (++i < philo->philo_count)
 	{
-		res = pthread_create(&philo->philosophers[i]->thread,
-			NULL, &p_act_init_cycle, philo->philosophers[i]);
-		if (res != 0)
-			return (err_free("philo thread creation failed", philo), false);
-		i++;
+		pid = fork();
+		if (pid == -1)
+			return (err_free("error while forking", philo), false);
+		else if (pid > 0)
+			philo->arr_pid[i] = pid;
+			
 	}
-	if (philo->philo_count > 1 &&
-		pthread_create(&philo->terminator_hunger, NULL, &terminator_hunger, philo) != 0)
-			return (err_free("terminator_hunger thread create failed", philo), false);
+
 	return (true);
 }
 
