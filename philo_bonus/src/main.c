@@ -28,7 +28,7 @@ static bool start_sim(t_philo *philo)
 	pid_t	pid;
 
 	philo->start_time = get_current_time() + (philo->philo_count * 20);
-	i = 0;
+	i = -1;
 	while (++i < philo->philo_count)
 	{
 		pid = fork();
@@ -36,9 +36,14 @@ static bool start_sim(t_philo *philo)
 			return (err_free("error while forking", philo), false);
 		else if (pid > 0)
 			philo->arr_pid[i] = pid;
-			
+		else if (pid == 0)
+		{
+			philo->this_guy = philo->philosophers[i];
+			p_act_init_cycle(philo);
+		}
 	}
-
+	if (!activate_terminators(philo))
+		return (false);
 	return (true);
 }
 
