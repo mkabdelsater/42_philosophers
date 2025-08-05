@@ -114,7 +114,10 @@ void	exit_philo_proc(t_philo *philo, int exit_code);
 // * actions *
 void	*p_act_init_cycle(void *p);
 void	*terminator_hunger(void *data);
+void	p_act_grab_fork(t_philosopher *p);
+void	philo_proc_sleep(time_t duration);
 t_philo	*set_the_table(int ac, char **av);
+
 
 // * semaphores *
 bool	init_shared_semaphores(t_philo *philo);

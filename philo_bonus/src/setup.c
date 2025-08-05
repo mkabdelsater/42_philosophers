@@ -52,7 +52,7 @@ static t_philosopher	**usher_the_guests(t_philo *philo)
 			return (err_free("failed to create meals_sem_name", philo), NULL);
 		ps[i]->meals_had = 0;
 		ps[i]->forks_held = 0;
-		ps[i]->sated = false;
+		ps[i]->sem_sated = false;
 		i++;
 	}
 	return (ps);
