@@ -16,9 +16,10 @@ void	print_status(t_philosopher *p, bool is_terminator, t_status status)
 {
 	char	*status_str;
 
+	printf("waiting for the write semaphore\n");
 	sem_wait(p->sem_write);
 	if (status == DEAD)
-		status_str = RED"FKNG DIED 💀"NC;
+		status_str = RED"died 💀"NC;
 	else if (status == EATING)
 		status_str = "is eating 🍴";
 	else if (status == SLEEPING)
@@ -33,4 +34,5 @@ void	print_status(t_philosopher *p, bool is_terminator, t_status status)
 		get_current_time() - p->philo->start_time, p->id + 1, status_str);
 	if (!is_terminator)
 		sem_post(p->sem_write);
+	printf("write was successful\n");
 }

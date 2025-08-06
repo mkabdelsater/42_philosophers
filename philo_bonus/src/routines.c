@@ -100,15 +100,18 @@ static void p_act_alone(t_philosopher *p)
 		free_philo(p->philo);
 		exit(EXIT_SEM_ERR);
 	}
+	sem_wait(p->sem_sated);
 	delay_thread(p->philo->start_time);
 	if (p->philo->max_meals == 0)
 	{
 		sem_post(p->sem_sated);
 		exit(EXIT_PHILO_SATED);
 	}
-	print_status(p, false, HAS_FORK_1);
+	printf("%ld %d %s\n", get_current_time() - p->philo->start_time, p->id + 1,
+		"has taken a fork");
 	philo_proc_sleep(p->philo->til_death);
-	print_status(p, false, DEAD);
+	printf("%ld %d %s\n", get_current_time() - p->philo->start_time, p->id + 1,
+		 RED"died 💀"NC);
 	free_philo(p->philo);
 	exit(EXIT_PHILO_DEATH);
 }
