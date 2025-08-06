@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   conclude.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:55:35 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 15:08:22 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
-static void set_sim_stop(t_philo *philo, bool val)
+static void	set_sim_stop(t_philo *philo, bool val)
 {
 	pthread_mutex_lock(&philo->sim_stop_lock);
 	philo->sim_stop = val;
@@ -8,7 +20,7 @@ static void set_sim_stop(t_philo *philo, bool val)
 }
 
 // TODO:[sanity] invert logic if this causes problems somehow
-static bool ready_to_die(t_philosopher *philosopher)
+static bool	ready_to_die(t_philosopher *philosopher)
 {
 	time_t	time;
 
@@ -34,9 +46,9 @@ static bool	can_conclude(t_philo *philo)
 		pthread_mutex_lock(&philo->philosophers[i]->meal_time_lock);
 		if (ready_to_die(philo->philosophers[i]))
 			return (true);
-		if (philo->max_meals != -1 &&
-			philo->philosophers[i]->meals_had < philo->max_meals)
-				sated = false;
+		if (philo->max_meals != -1
+			&& philo->philosophers[i]->meals_had < philo->max_meals)
+			sated = false;
 		pthread_mutex_unlock(&philo->philosophers[i]->meal_time_lock);
 		i++;
 	}
@@ -54,7 +66,6 @@ void	*terminator(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-
 	if (philo->max_meals == 0)
 		return (NULL);
 	set_sim_stop(philo, false);

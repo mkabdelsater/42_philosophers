@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   intercom.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:27:20 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:46:17 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 static bool	open_shared_semaphores(t_philosopher *p);
 static bool	open_process_semaphores(t_philosopher *p);
 
-void		init_intercom(t_philo *philo, t_philosopher *p)
+void	init_intercom(t_philo *philo, t_philosopher *p)
 {
 	if (philo->philo_count == 1)
 		return ;
@@ -40,7 +52,7 @@ static bool	open_shared_semaphores(t_philosopher *p)
 
 // ? shared between each process and it's terminator
 // TODO: 🐸 ~ thread safety is my passion ~ 🐸
-static bool open_process_semaphores(t_philosopher *p)
+static bool	open_process_semaphores(t_philosopher *p)
 {
 	p->sem_meals = sem_open(p->meals_sem_name, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (p->sem_meals == SEM_FAILED)

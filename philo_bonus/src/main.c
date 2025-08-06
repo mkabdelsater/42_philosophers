@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:27:27 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:47:20 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 static bool	start_sim(t_philo *philo);
@@ -14,21 +26,19 @@ int	main(int ac, char **av)
 	validate_input(ac, av);
 	philo = set_the_table(ac, av);
 	if (!philo)
-		return(err_out("Failed to Set the Table"), EXIT_FAILURE);
+		return (err_out("Failed to Set the Table"), EXIT_FAILURE);
 	if (!start_sim(philo))
 		return (err_out("Couldn't start the simulation"), EXIT_FAILURE);
 	res = end_sim(philo);
 	sem_cleanup(philo);
 	free_philo(philo);
-
 	if (res == -1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
 // ? each philo is now it's own process, hence fork.
-
-static bool start_sim(t_philo *philo)
+static bool	start_sim(t_philo *philo)
 {
 	int		i;
 	pid_t	pid;
@@ -53,7 +63,7 @@ static bool start_sim(t_philo *philo)
 	return (true);
 }
 
-static int end_sim(t_philo *philo)
+static int	end_sim(t_philo *philo)
 {
 	int	i;
 	int	exit_code;
@@ -90,7 +100,7 @@ static int	kill_the_child(t_philo *philo, pid_t *pid)
 	int	exit_code;
 
 	if (*pid && waitpid(*pid, &philo_exit_code, WNOHANG) != 0
-			&& WIFEXITED(philo_exit_code))
+		&& WIFEXITED(philo_exit_code))
 	{
 		exit_code = WEXITSTATUS(philo_exit_code);
 		if (exit_code == EXIT_PHILO_DEATH)

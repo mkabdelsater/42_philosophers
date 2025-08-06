@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   reporting.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:55:59 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:58:35 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 bool	get_sim_stop(t_philo *philo)
@@ -36,7 +48,6 @@ void	print_status(t_philosopher *p, bool is_terminator, t_status status)
 		status_str = "aquired fork 1️⃣";
 	else if (status == HAS_FORK_2)
 		status_str = "aquired fork 2️⃣";
-
 	printf("%ld %d %s\n",
 		get_current_time() - p->philo->start_time, p->id + 1, status_str);
 	pthread_mutex_unlock(&p->philo->write_lock);

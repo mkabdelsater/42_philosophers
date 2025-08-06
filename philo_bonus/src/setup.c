@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:27:39 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:50:08 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 // ? if you don't do *name = '\0' you get an invalid free because of strcat (?)
 
-char	*create_unique_sem_name(char *str, int id)
+char	*get_sem_name(char *str, int id)
 {
 	char	*name;
 	char	*temp;
@@ -11,9 +23,11 @@ char	*create_unique_sem_name(char *str, int id)
 
 	digits = 1;
 	i = id;
-	while (i /= 10)
+	while (i)
+	{
 		digits++;
-
+		i /= 10;
+	}
 	i = ft_strlen(str) + digits;
 	name = malloc (sizeof(char) * (i + 1));
 	if (name == NULL)
@@ -43,11 +57,10 @@ static t_philosopher	**usher_the_guests(t_philo *philo)
 	{
 		ps[i] = malloc(sizeof(t_philosopher));
 		if (!ps[i])
-			return (err_free("failed to alloc in usher_the_guests", philo), NULL);
+			return (err_free("failed alloc in usher_the_guests", philo), NULL);
 		ps[i]->philo = philo;
 		ps[i]->id = i;
-		ps[i]->meals_sem_name = \
-			create_unique_sem_name(SEM_MEALS, ps[i]->id + 1);
+		ps[i]->meals_sem_name = get_sem_name(SEM_MEALS, ps[i]->id + 1);
 		if (ps[i]->meals_sem_name == NULL)
 			return (err_free("failed to create meals_sem_name", philo), NULL);
 		ps[i]->meals_had = 0;
@@ -62,7 +75,7 @@ t_philo	*set_the_table(int ac, char **av)
 {
 	t_philo	*philo;
 
-	philo = (t_philo*)malloc(sizeof(t_philo));
+	philo = (t_philo *)malloc(sizeof(t_philo));
 	if (!philo)
 		return (NULL);
 	philo->philo_count = ft_atoi(av[1]);

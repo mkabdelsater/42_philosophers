@@ -1,31 +1,41 @@
-#include "../inc/philo.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   terminator.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:26:09 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:50:37 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../inc/philo.h"
 
 static bool	can_conclude(t_philo *phile, t_philosopher *p);
 
 // * terminator is a thread that checks if either a philo died
 // * or if all philos had enough meals, ending the sim in those cases
 
-void		*proc_terminator(void *data)
+void	*proc_terminator(void *data)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
 	if (philo->max_meals == 0)
 		return (NULL);
-
 	sem_wait(philo->running_proc->sem_death);
 	sem_wait(philo->running_proc->sem_sated);
 	delay_thread(philo->start_time);
 	while (!can_conclude(philo, philo->running_proc))
 	{
 		usleep(1000);
-		continue;
+		continue ;
 	}
 	return (NULL);
 }
 
-void		*hunger_terminator(void *data)
+void	*hunger_terminator(void *data)
 {
 	t_philo	*philo;
 
@@ -46,7 +56,7 @@ void		*hunger_terminator(void *data)
 	return (NULL);
 }
 
-void		*sated_terminator(void *data)
+void	*sated_terminator(void *data)
 {
 	t_philo	*philo;
 
@@ -73,7 +83,7 @@ void		*sated_terminator(void *data)
 	return (NULL);
 }
 
-int			kill_philo_processes(t_philo *philo, int exit_code)
+int	kill_philo_processes(t_philo *philo, int exit_code)
 {
 	int	i;
 

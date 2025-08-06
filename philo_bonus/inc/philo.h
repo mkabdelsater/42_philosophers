@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:28:01 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:29:52 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -102,7 +114,6 @@ void	validate_input(int ac, char **av);
 void	print_err_exit(char *msg);
 void	err_out(char *msg);
 
-
 // * reporting *
 void	print_status(t_philosopher *p, bool is_terminator, t_status status);
 bool	get_sim_stop(t_philo *philo);
@@ -130,10 +141,10 @@ void	sem_cleanup(t_philo *philo);
 bool	init_shared_semaphores(t_philo *philo);
 
 // * terminators *
-void		*hunger_terminator(void *data);
-void		*sated_terminator(void *data);
-void		*proc_terminator(void *data);
-int			kill_philo_processes(t_philo *philo, int exit_code);
-bool		activate_terminators(t_philo *philo);
+void	*hunger_terminator(void *data);
+void	*sated_terminator(void *data);
+void	*proc_terminator(void *data);
+int		kill_philo_processes(t_philo *philo, int exit_code);
+bool	activate_terminators(t_philo *philo);
 
 #endif

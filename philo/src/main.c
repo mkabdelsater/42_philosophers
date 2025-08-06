@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:54:41 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 15:10:05 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 static bool	start_sim(t_philo *philo);
-static void end_sim(t_philo *philo);
-static bool arg_has_non_digits(char *str);
+static void	end_sim(t_philo *philo);
+static bool	arg_has_non_digits(char *str);
 
 int	main(int ac, char **av)
 {
@@ -13,14 +25,14 @@ int	main(int ac, char **av)
 	validate_input(ac, av);
 	philo = set_the_table(ac, av);
 	if (!philo)
-		return(err_out("Failed to Set the Table"), EXIT_FAILURE);
+		return (err_out("Failed to Set the Table"), EXIT_FAILURE);
 	if (!start_sim(philo))
 		return (err_out("Couldn't start the simulation"), EXIT_FAILURE);
 	end_sim(philo);
 	return (EXIT_SUCCESS);
 }
 
-static bool start_sim(t_philo *philo)
+static bool	start_sim(t_philo *philo)
 {
 	int	i;
 	int	res;
@@ -30,18 +42,18 @@ static bool start_sim(t_philo *philo)
 	while (i < philo->philo_count)
 	{
 		res = pthread_create(&philo->philosophers[i]->thread,
-			NULL, &p_act_init_cycle, philo->philosophers[i]);
+				NULL, &p_act_init_cycle, philo->philosophers[i]);
 		if (res != 0)
 			return (err_free("philo thread creation failed", philo), false);
 		i++;
 	}
-	if (philo->philo_count > 1 &&
-		pthread_create(&philo->terminator, NULL, &terminator, philo) != 0)
-			return (err_free("terminator thread create failed", philo), false);
+	if (philo->philo_count > 1
+		&& pthread_create(&philo->terminator, NULL, &terminator, philo) != 0)
+		return (err_free("terminator thread create failed", philo), false);
 	return (true);
 }
 
-static void end_sim(t_philo *philo)
+static void	end_sim(t_philo *philo)
 {
 	int	i;
 
@@ -57,7 +69,7 @@ static void end_sim(t_philo *philo)
 	free_philo(philo);
 }
 
-static bool arg_has_non_digits(char *str)
+static bool	arg_has_non_digits(char *str)
 {
 	int	i;
 
@@ -75,18 +87,16 @@ void	validate_input(int ac, char **av)
 {
 	int		i;
 	int		nbr;
-	char	*arg;
 
 	i = 1;
 	while (i < ac)
 	{
-		arg = av[i];
-		if (arg_has_non_digits(arg))
+		if (arg_has_non_digits(av[i]))
 		{
 			err_out(ERR_NON_INT);
 			exit(EXIT_FAILURE);
 		}
-		nbr = ft_atoi(arg);
+		nbr = ft_atoi(av[i]);
 		if (nbr <= 0)
 		{
 			err_out(ERR_NON_INT);

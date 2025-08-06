@@ -1,5 +1,16 @@
-#include "../inc/philo.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   semaphores.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:27:32 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:45:12 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../inc/philo.h"
 
 void	unlink_shared_semaphores(void)
 {
@@ -17,18 +28,18 @@ bool	init_shared_semaphores(t_philo *philo)
 {
 	unlink_shared_semaphores();
 	philo->sem_forks = sem_open(SEM_FORKS, O_CREAT,
-		S_IRUSR | S_IWUSR, philo->philo_count);
+			S_IRUSR | S_IWUSR, philo->philo_count);
 	if (philo->sem_forks == SEM_FAILED)
 		return (handle_sem_error(philo), false);
 	philo->sem_write = sem_open(SEM_WRITE, O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (philo->sem_write == SEM_FAILED)
 		return (handle_sem_error(philo), false);
 	philo->sem_sated = sem_open(SEM_SATED, O_CREAT, S_IRUSR | S_IWUSR,
-		 philo->philo_count);
+			philo->philo_count);
 	if (philo->sem_sated == SEM_FAILED)
 		return (handle_sem_error(philo), false);
 	philo->sem_death = sem_open(SEM_VITAL, O_CREAT, S_IRUSR | S_IWUSR,
-		philo->philo_count);
+			philo->philo_count);
 	if (philo->sem_death == SEM_FAILED)
 		return (handle_sem_error(philo), false);
 	philo->sem_stops = sem_open(SEM_PAUSE, O_CREAT, S_IRUSR | S_IWUSR, 1);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routines.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:25:44 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:49:13 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 static void	p_act_think(t_philosopher *p, bool quiet);
@@ -38,7 +50,7 @@ void	p_act_init_cycle(t_philo *philo)
 	p_act_cycle(p);
 }
 
-static void p_act_cycle(t_philosopher *p)
+static void	p_act_cycle(t_philosopher *p)
 {
 	if (p->id % 2)
 		p_act_think(p, true);
@@ -50,7 +62,7 @@ static void p_act_cycle(t_philosopher *p)
 }
 
 // TODO: the 1 @63 should probably be explicitly globalized as DELAY
-static void p_act_think(t_philosopher *p, bool quiet)
+static void	p_act_think(t_philosopher *p, bool quiet)
 {
 	time_t	til_think;
 
@@ -61,8 +73,6 @@ static void p_act_think(t_philosopher *p, bool quiet)
 	sem_post(p->sem_meals);
 	if (til_think < 0)
 		til_think = 1;
-	// if (til_think == 0 && quiet == true)
-	// 	til_think = 1;
 	if (til_think > PHILO_CAP * 3)
 		til_think = PHILO_CAP;
 	if (!quiet)
@@ -70,7 +80,7 @@ static void p_act_think(t_philosopher *p, bool quiet)
 	philo_proc_sleep(til_think);
 }
 
-static void p_act_eat_sleep(t_philosopher *p)
+static void	p_act_eat_sleep(t_philosopher *p)
 {
 	p_act_grab_fork(p);
 	p_act_grab_fork(p);
@@ -91,10 +101,10 @@ static void p_act_eat_sleep(t_philosopher *p)
 
 // this was returning NULL for some reason but the value wasn't
 // being used meaningfully
-static void p_act_alone(t_philosopher *p)
+static void	p_act_alone(t_philosopher *p)
 {
 	p->sem_sated = sem_open(SEM_SATED, O_CREAT, S_IRUSR | S_IWUSR,
-		p->philo->philo_count);
+			p->philo->philo_count);
 	if (p->sem_sated == SEM_FAILED)
 	{
 		free_philo(p->philo);
@@ -111,7 +121,7 @@ static void p_act_alone(t_philosopher *p)
 		"has taken a fork");
 	philo_proc_sleep(p->philo->til_death);
 	printf("%ld %d %s\n", get_current_time() - p->philo->start_time, p->id + 1,
-		 RED"died 💀"NC);
+		RED"died 💀"NC);
 	free_philo(p->philo);
 	exit(EXIT_PHILO_DEATH);
 }

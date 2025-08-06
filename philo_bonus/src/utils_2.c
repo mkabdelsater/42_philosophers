@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_2.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:27:52 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:52:16 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	p_act_grab_fork(t_philosopher *p)
@@ -30,18 +42,16 @@ void	validate_input(int ac, char **av)
 {
 	int		i;
 	int		nbr;
-	char	*arg;
 
 	i = 1;
 	while (i < ac)
 	{
-		arg = av[i];
-		if (arg_has_non_digits(arg))
+		if (arg_has_non_digits(av[i]))
 		{
 			err_out(ERR_NON_INT);
 			exit(EXIT_FAILURE);
 		}
-		nbr = ft_atoi(arg);
+		nbr = ft_atoi(av[i]);
 		if (nbr <= 0)
 		{
 			err_out(ERR_NON_INT);
@@ -56,7 +66,7 @@ void	validate_input(int ac, char **av)
 	}
 }
 
-bool arg_has_non_digits(char *str)
+bool	arg_has_non_digits(char *str)
 {
 	int	i;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:53:19 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:56:58 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -26,7 +38,7 @@ typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_philo
 {
-	int	philo_count;
+	int				philo_count;
 	time_t			start_time;
 	time_t			til_death;
 	time_t			til_meal;
@@ -43,9 +55,9 @@ typedef struct s_philo
 typedef struct s_philosopher
 {
 	pthread_t			thread;
-	int		id;
-	int		meals_had;
-	int		fork[2];
+	int					id;
+	int					meals_had;
+	int					fork[2];
 	pthread_mutex_t		meal_time_lock;
 	time_t				since_last_meal;
 	t_philo				*philo;
@@ -66,7 +78,6 @@ int		ft_atoi(const char *nptr);
 void	err_out(char *msg);
 void	err_free(char *msg, t_philo *philo);
 void	validate_input(int ac, char **av);
-
 
 // * reporting *
 bool	get_sim_stop(t_philo *philo);

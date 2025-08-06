@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:26:45 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 14:30:24 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 void	free_philo(t_philo *philo)
 {
 	int	i;
 
-	if(!philo)
+	if (!philo)
 		return ;
 	if (philo->arr_pid)
 		free(philo->arr_pid);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moabdels <moabdels@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 14:56:23 by moabdels          #+#    #+#             */
+/*   Updated: 2025/08/06 15:09:50 by moabdels         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/philo.h"
 
 // ? pthread_mutex_init should always return 0
@@ -15,13 +27,13 @@ static pthread_mutex_t	*alloc_fork_mutexes(t_philo *philo)
 	return (fork_locks);
 }
 
-static bool init_mutex_locks(t_philo *philo)
+static bool	init_mutex_locks(t_philo *philo)
 {
 	philo->fork_locks = alloc_fork_mutexes(philo);
 	if (!philo->fork_locks)
 		return (false);
-	if (pthread_mutex_init(&philo->sim_stop_lock, 0) != 0 ||
-			pthread_mutex_init(&philo->write_lock, 0) != 0)
+	if (pthread_mutex_init(&philo->sim_stop_lock, 0) != 0
+		|| pthread_mutex_init(&philo->write_lock, 0) != 0)
 		return (err_free("Failed to init mutexes", philo), false);
 	return (true);
 }
@@ -31,14 +43,14 @@ static bool init_mutex_locks(t_philo *philo)
 // ? p_0 takes f_0, p_1 takes f_1, p_2 takes f_2
 // ? each philo holds one fork, and attempts to take a fork held by the other
 // ? we get a deadlock right off the bat!
-// ? to avoid this, we make odd even numbered philos start by attempting to take
+// ? to avoid this, we make odd numbered philos start by attempting to take
 // ? an odd fork, guarantteeing that either them or the next philo fails
 // ? to take a fork, we get:
 // ? p_0 wants f_0 then f_1
 // ? p_1 wants f_2 then f_1
 // ? p_2 wants f_2 then f_0, f_2 will have been taken, causing them to wait.
 
-static void assign_the_forks(t_philosopher *philosopher)
+static void	assign_the_forks(t_philosopher *philosopher)
 {
 	int	ph_id;
 	int	philo_count;
@@ -70,10 +82,10 @@ static t_philosopher	**usher_the_guests(t_philo *philo)
 	{
 		philosophers[i] = malloc(sizeof(t_philosopher));
 		if (!philosophers[i])
-			return (err_free("failed to alloc in usher_the_guests", philo), NULL);
+			return (err_free("failed alloc in usher_the_guests", philo), NULL);
 		if (pthread_mutex_init(&philosophers[i]->meal_time_lock, 0) != 0)
 			return (err_free("call to pthread_mutex_init returnd nonzero",
-						philo), NULL);
+					philo), NULL);
 		philosophers[i]->philo = philo;
 		philosophers[i]->id = i;
 		philosophers[i]->meals_had = 0;
@@ -89,7 +101,7 @@ t_philo	*set_the_table(int ac, char **av)
 {
 	t_philo	*philo;
 
-	philo = (t_philo*)malloc(sizeof(t_philo));
+	philo = (t_philo *)malloc(sizeof(t_philo));
 	if (!philo)
 		return (NULL);
 	philo->philo_count = ft_atoi(av[1]);
