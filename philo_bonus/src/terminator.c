@@ -17,7 +17,7 @@ void		*proc_terminator(void *data)
 	sem_wait(philo->running_proc->sem_death);
 	sem_wait(philo->running_proc->sem_sated);
 	delay_thread(philo->start_time);
-	while (can_conclude(philo, philo->running_proc))
+	while (!can_conclude(philo, philo->running_proc))
 	{
 		usleep(1000);
 		continue;
