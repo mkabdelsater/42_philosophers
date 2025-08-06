@@ -58,8 +58,8 @@ static void p_act_think(t_philosopher *p, bool quiet)
 	til_think = (p->philo->til_death
 			- (get_current_time() - p->since_last_meal)
 			- p->philo->til_meal) / 2;
-	sem_wait(p->sem_meals);
-	if (til_think <= 0)
+	sem_post(p->sem_meals);
+	if (til_think < 0)
 		til_think = 1;
 	// if (til_think == 0 && quiet == true)
 	// 	til_think = 1;

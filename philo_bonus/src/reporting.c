@@ -4,7 +4,6 @@ bool	get_sim_stop(t_philo *philo)
 {
 	bool	res;
 
-	res = false;
 	sem_wait(philo->sem_stops);
 	res = philo->sim_stop;
 	sem_post(philo->sem_stops);
