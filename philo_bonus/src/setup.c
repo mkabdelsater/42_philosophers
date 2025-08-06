@@ -52,7 +52,7 @@ static t_philosopher	**usher_the_guests(t_philo *philo)
 			return (err_free("failed to create meals_sem_name", philo), NULL);
 		ps[i]->meals_had = 0;
 		ps[i]->forks_held = 0;
-		ps[i]->sem_sated = false;
+		ps[i]->sated = false;
 		i++;
 	}
 	return (ps);
@@ -69,6 +69,8 @@ t_philo	*set_the_table(int ac, char **av)
 	philo->til_death = ft_atoi(av[2]);
 	philo->til_meal = ft_atoi(av[3]);
 	philo->til_sleep = ft_atoi(av[4]);
+	philo->sated_phils = 0;
+	philo->sim_stop = false;
 	if (ac == 6)
 		philo->max_meals = ft_atoi(av[5]);
 	else
